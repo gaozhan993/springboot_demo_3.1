@@ -1,0 +1,141 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <title>Document</title>
+</head>
+
+<script src="js/jquery.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+
+    $(function() {
+        //通过ID查
+        $("#getById").bind("click",function () {
+
+            var userNo = $("#userNo").val();
+            var url = "find?userNo="+userNo;
+            $.ajax({
+                state:"GET",
+                url:url,
+                dataType:"JSON",
+                success:function (json,status) {
+                    console.log(json);
+                    console.log(status)
+                    if (json.length<1){
+                        alert("未找到要查询的信息！");
+                    }else {
+                        $("#userName").val(json.userName);
+                        $("#age").val(json.age);
+                    }
+                }
+            })
+        });
+
+        //增
+        $("#insert").bind("click",function () {
+            var userNo = $("#userNo").val();
+            var userName = $("#userName").val();
+            var age = $("#age").val();
+            var url = "addUser?userNo="+ userNo +"&userName="+userName+"&age="+age;
+
+            $.ajax({
+                state:"GET",
+                url:url,
+                dataType:"TEXT",
+                success:function (text,state) {
+                    alert(text);
+                }
+            })
+        });
+
+        //查所有
+        $("#findAll").bind("click",function () {
+            var url = "findAll";
+            $.ajax({
+                state:"GET",
+                url:url,
+                dataType:"JSON",
+                success:function (json,status) {
+                    var str = "<table>";
+                    for (var i=0;i<json.length;i++){
+                        str+="<tr><td>"+json[i].userNo+"</td><td>"+json[i].userName+"</td><td>"+json[i].age+"</td></tr>"
+                    }
+                    str+="</table>";
+                   console.log(str);
+                   $("#showUsers").html(str);
+                }
+            })
+        });
+
+        //删除
+        $("#del").bind("click",function () {
+            var userNo = $("#userNo").val();
+            var url = "del?userNo="+userNo;
+
+            $.ajax({
+                state:"GET",
+                url:url,
+                dataType:"TEXT",
+                success:function (text,status) {
+                    if(text.length!=null){
+                        alert("已删除！");
+                    }
+                    else {
+                        alert("出现未知错误，删除失败！")
+                    }
+                }
+            })
+        });
+
+        //修改
+        $("#modify").bind("click",function () {
+            var userNo = $("#userNo").val();
+            var userName = $("#userName").val();
+            var age = $("#age").val();
+
+            var url = "modify?userNo="+userNo+"&userName="+userName+"&age="+age;
+
+            $.ajax({
+                state:"GET",
+                url:url,
+                dataType:"TEXT",
+                success:function (text,status) {
+                    if (text!=null){
+                        alert("修改成功！")
+                        $("#userNo").val("");
+                        $("#userName").val("");
+                        $("#age").val("");
+                    }else{
+                        alert("未知错误，修改未成功！")
+                    }
+                }
+            })
+        })
+
+
+
+    })
+
+
+
+
+</script>
+
+<body>
+
+id：
+<input name="userID" id="userNo" type="text">
+姓名：
+<input name="userName" id="userName" type="text">
+年龄：
+<input name="age" id="age" type="number">
+
+<button id="getById">通过id查询</button>
+<button id="insert">添加</button>
+<button id="del">删除</button>
+<button id="modify">修改</button>
+<button id="findAll">全部查询</button>
+
+<div id="showUsers"></div>
+</body>
+</html>
