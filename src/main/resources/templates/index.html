@@ -19,9 +19,7 @@
                 url:url,
                 dataType:"JSON",
                 success:function (json,status) {
-                    console.log(json);
-                    console.log(status)
-                    if (json.length<1){
+                    if (json.userNo==0){
                         alert("未找到要查询的信息！");
                     }else {
                         $("#userName").val(json.userName);

@@ -24,8 +24,7 @@ public class UserController {
 
     @GetMapping("getUser")
     public UserDTO getUser(){
-        UserDTO userDTO = new UserDTO();
-        userDTO = userInfoService.getUserDTO();
+        UserDTO userDTO = userInfoService.getUserDTO();
         return userDTO;
     }
 
@@ -107,7 +106,8 @@ public class UserController {
     @ResponseBody
     @RequestMapping("find")
     public String getUserByUserNo(int userNo){
-        String json = null;
+        User userTemp = new User();
+        String json = JSON.toJSONString(userTemp);
         if(!userRepository.findById(userNo).toString().equals("Optional.empty")){
             User user = userRepository.findById(userNo).get();
             json = JSON.toJSONString(user);
